@@ -1,5 +1,7 @@
 package com.example.Hackathon.model;
 
+import org.springframework.context.annotation.Lazy;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class User {
     private String password;
 
     @OneToMany
+    @Lazy
     private List<User> acquaintances;
 
     public User() {

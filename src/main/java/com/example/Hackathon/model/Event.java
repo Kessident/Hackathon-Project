@@ -1,5 +1,8 @@
 package com.example.Hackathon.model;
 
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.annotation.LastModifiedBy;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -30,6 +33,7 @@ public class Event {
     private List<User> createdBy;
 
     @OneToMany
+    @Lazy
     private List<User> attending;
 
     public Event() {
