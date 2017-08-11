@@ -26,20 +26,20 @@ public class EventController {
     @Autowired
     UserRepo userRepo;
 
-    @PostConstruct
-    public void init() {
-        if (userRepo.count() == 0){
-        User myUser = new User("newEmail", "firstName", "lastName", "password", null);
-        userRepo.save(myUser);
-
-        myUser = userRepo.findByEmail("email");
-        List<User> created = new ArrayList<>();
-        created.add(myUser);
-
-        Event newEvent = new Event("name", "description", "Some date", Status.NEW, "location", created, created);
-        eventRepo.save(newEvent);
-        }
-    }
+//    @PostConstruct
+//    public void init() {
+//        if (userRepo.count() == 0){
+//        User myUser = new User("newEmail", "firstName", "lastName", "password", null);
+//        userRepo.save(myUser);
+//
+//        myUser = userRepo.findByEmail("email");
+//        List<User> created = new ArrayList<>();
+//        created.add(myUser);
+//
+//        Event newEvent = new Event("name", "description", "Some date", Status.NEW, "location", created, created);
+//        eventRepo.save(newEvent);
+//        }
+//    }
 
     @GetMapping("/all")
     @CrossOrigin
