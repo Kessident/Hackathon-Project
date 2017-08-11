@@ -42,6 +42,7 @@ public class EventController {
     }
 
     @GetMapping("/all")
+    @CrossOrigin
     public List<Event> viewEvents() {
         ArrayList<Event> allEvents = new ArrayList<>();
         eventRepo.findAll().forEach(allEvents::add);
@@ -50,6 +51,7 @@ public class EventController {
     }
 
     @GetMapping("/{eventId}")
+    @CrossOrigin
     public Event getSingleEvent(@PathVariable int eventId) {
         Event selectedEvent = eventRepo.findOne(eventId);
 
@@ -59,6 +61,7 @@ public class EventController {
     }
 
     @PostMapping("/{eventId}/rsvp")
+    @CrossOrigin
     public String rsvp(@PathVariable int eventId, HttpSession session) {
         Event selectedEvent = eventRepo.findOne(eventId);
         if (selectedEvent == null){throw new NotFoundException("Event not found with supplied id");}
@@ -78,17 +81,13 @@ public class EventController {
     }
 
     @PostMapping("/create")
-    public String createNewEvent(String name, String description, String date, String location, HttpSession session){
+    @CrossOrigin
+    public String createNewEvent(@RequestBody Event newEvent, HttpSession session){
         User createdBy = userRepo.findOne((Integer)session.getAttribute("userId"));
         List<User> createdByList = new ArrayList<>();
         createdByList.add(createdBy);
 
-        Event newEvent  = new Event();
-        newEvent.setName(name);
-        newEvent.setDescription(description);
-        newEvent.setDate(date);
         newEvent.setStatus(Status.NEW);
-        newEvent.setLocation(location);
         newEvent.setCreatedBy(createdByList);
 
         try {

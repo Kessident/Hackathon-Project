@@ -12,21 +12,20 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("api/user")
-public class userController {
+public class UserController {
     @Autowired
     UserRepo userRepo;
 
     @PostMapping("/login")
-    public String login(String email, String password, HttpSession session) {
-        User foundUser = userRepo.findByEmail(email);
-        System.out.println(email);
-        System.out.println(password);
+    @CrossOrigin
+    public String login(@RequestBody User user, HttpSession session) {
+        User foundUser = userRepo.findByEmail(user.getEmail());
 
         if (foundUser == null) {
             return "user not found";
         }
 
-        if (foundUser.getPassword().equals(password)) {
+        if (foundUser.getPassword().equals(user.getPassword())) {
             session.setAttribute("userId", foundUser.getUserId());
             return "user login successful";
         } else {
@@ -35,7 +34,13 @@ public class userController {
     }
 
     @PostMapping("/register")
-    public String register(String email, String password, String firstName, String lastName) {
+    @CrossOrigin
+    public String register(@RequestBody User user) {
+        String email = user.getEmail();
+        String password = user.getPassword();
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
+
         if (email == null || password == null || firstName == null || lastName == null){
             throw new IllegalArgumentException("Please supply all required values");
         }
@@ -56,6 +61,7 @@ public class userController {
     }
 
     @GetMapping("/logout")
+    @CrossOrigin
     public String logout(HttpSession session){
         session.invalidate();
         return "Logged out successfully";
