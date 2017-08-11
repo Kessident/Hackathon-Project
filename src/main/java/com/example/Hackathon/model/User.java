@@ -11,7 +11,7 @@ public class User {
     @GeneratedValue
     private int userId;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
 
     @Column

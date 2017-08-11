@@ -9,10 +9,9 @@ import com.example.Hackathon.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by duhlig on 8/10/17.
@@ -55,7 +54,9 @@ public class EventController {
     public Event getSingleEvent(@PathVariable int eventId) {
         Event selectedEvent = eventRepo.findOne(eventId);
 
-        if (selectedEvent == null){throw new NotFoundException("Event not found with supplied id");}
+        if (selectedEvent == null) {
+            throw new NotFoundException("Event not found with supplied id");
+        }
 
         return selectedEvent;
     }
@@ -64,12 +65,14 @@ public class EventController {
     @CrossOrigin
     public String rsvp(@PathVariable int eventId, HttpSession session) {
         Event selectedEvent = eventRepo.findOne(eventId);
-        if (selectedEvent == null){throw new NotFoundException("Event not found with supplied id");}
+        if (selectedEvent == null) {
+            throw new NotFoundException("Event not found with supplied id");
+        }
 
         List<User> attendingList = selectedEvent.getAttending();
         User currentUser = userRepo.findOne((Integer) session.getAttribute("userId"));
 
-        if (attendingList.contains(currentUser)){
+        if (attendingList.contains(currentUser)) {
             attendingList.remove(currentUser);
             eventRepo.save(selectedEvent);
             return "User no longer going to event";
@@ -82,8 +85,8 @@ public class EventController {
 
     @PostMapping("/create")
     @CrossOrigin
-    public String createNewEvent(@RequestBody Event newEvent, HttpSession session){
-        User createdBy = userRepo.findOne((Integer)session.getAttribute("userId"));
+    public String createNewEvent(@RequestBody Event newEvent, HttpSession session) {
+        User createdBy = userRepo.findOne((Integer) session.getAttribute("userId"));
         List<User> createdByList = new ArrayList<>();
         createdByList.add(createdBy);
 
@@ -92,10 +95,10 @@ public class EventController {
 
         try {
             eventRepo.save(newEvent);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             return "Error creating event";
         }
-        
+
         return "Event created successfully";
     }
 }

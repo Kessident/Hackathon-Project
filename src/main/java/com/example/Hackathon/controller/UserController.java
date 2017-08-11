@@ -4,8 +4,6 @@ package com.example.Hackathon.controller;
 import com.example.Hackathon.model.User;
 import com.example.Hackathon.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -41,12 +39,14 @@ public class UserController {
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
 
-        if (email == null || password == null || firstName == null || lastName == null){
+        if (email == null || password == null || firstName == null || lastName == null) {
             throw new IllegalArgumentException("Please supply all required values");
         }
-        
+
         boolean alreadyExists = userRepo.findByEmail(email) != null;
-        if (alreadyExists){throw new IllegalArgumentException("User already exists");}
+        if (alreadyExists) {
+            throw new IllegalArgumentException("User already exists");
+        }
 
         User newUser = new User();
 
@@ -62,7 +62,7 @@ public class UserController {
 
     @GetMapping("/logout")
     @CrossOrigin
-    public String logout(HttpSession session){
+    public String logout(HttpSession session) {
         session.invalidate();
         return "Logged out successfully";
     }
